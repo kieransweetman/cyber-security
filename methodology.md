@@ -76,20 +76,6 @@ Nmap done: 1 IP address (1 host up) scanned in 2143.34 seconds
 #### Scanning directories
 
 ```bash
-[*] Detecting error code
-[*] Scanned 1 of 1 hosts (100% complete)
-[*] Auxiliary module execution completed
-msf6 auxiliary(scanner/http/dir_scanner) > set RHOSTS set RHOSTS 192.168.64.1RHOSTS => set RHOSTS 192.168.64.1
-msf6 auxiliary(scanner/http/dir_scanner) > set RPORT 9898
-RPORT => 9898
-msf6 auxiliary(scanner/http/dir_scanner) > set TARGETURI /
-TARGETURI => /
-msf6 auxiliary(scanner/http/dir_scanner) > set DICTIONARY /usr/share/wordlists/dirb/common.txt
-DICTIONARY => /usr/share/wordlists/dirb/common.txt
-msf6 auxiliary(scanner/http/dir_scanner) > set RHOSTS 45.86.36.184
-RHOSTS => 45.86.36.184
-msf6 auxiliary(scanner/http/dir_scanner) > set RPORT 80
-RPORT => 80
 msf6 auxiliary(scanner/http/dir_scanner) > run
 
 [*] Detecting error code
