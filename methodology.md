@@ -1,6 +1,10 @@
+---
+CreatedAt: 2024-12-03:1720
+LastUpdated: 2024-12-04:0957
+---
 
 ## Springboot
-### scanning all ports & services
+#### scanning all ports & services
 
 ```bash
 Host is up (0.00100s latency).
@@ -16,12 +20,12 @@ PORT      STATE SERVICE    VERSION
 
 ```
 
-### mysql scanner
+#### mysql scanner
 ![[Pasted image 20241203172034.png]]
 
 
 
-### password brute force 
+#### password brute force 
 
 
 ```bash
@@ -54,6 +58,21 @@ Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2024-12-03 11:41:
 Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2024-12-03 11:41:29
 
 ```
+
+
+
+
+#### CRSF attack possible
+
+```bash
+2024-12-04 09:56:36.893  INFO 12014 --- [nio-9898-exec-1] o.apache.tomcat.util.http.parser.Cookie  : A cookie header was received [:state=false; __client_uat=0; __clerk_db_jwt=dvb_2pWw3n7rX3IfFv53BGdnwQ4BB4K; auth=true; JSESSIONID=5657C742B391EA5804A1B89069450909] that contained an invalid cookie. That cookie will be ignored.
+ Note: further occurrences of this error will be logged at DEBUG level.
+2024-12-04 09:56:36.896  INFO 12014 --- [nio-9898-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-12-04 09:56:36.896  INFO 12014 --- [nio-9898-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-12-04 09:56:36.898  INFO 12014 --- [nio-9898-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+Hibernate: select user0_.id as id1_4_, user0_.password as password2_4_, user0_.username as username3_4_ from user user0_ where user0_.username=?
+```
+
 
 ## Lavarel app
 ```bash
@@ -125,3 +144,6 @@ msf6 auxiliary(scanner/http/dir_scanner) > run
 
 
 ```
+
+
+
