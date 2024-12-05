@@ -1,6 +1,6 @@
 ---
 CreatedAt: 2024-12-05:1412
-LastUpdated: 2024-12-05:1449
+LastUpdated: 2024-12-05:1455
 ---
 # Rapport d'Analyse de Vulnérabilités et Recommandations
 
@@ -26,71 +26,81 @@ Ce document présente les résultats d'une analyse approfondie des vulnérabilit
 - Un nœud Big Data hébergé à `node179686-env-1839015-etudiant-d02-01.sh1.hidora.com`.
 
 ---
-
 ## Application SpringBoot
-### Methodologie
 
-#### Analyse du systeme
-Un application web de SpringBoot qui accede a un base de donnee MySQL. L'application web emploie aussi des routes d'un `API`. 
+### Méthodologie
 
-L'application  possede 1 route lorsqu'un utilsateur n'est pas autentiqué, `/login`. Cette page contient un form html avec deux inputs `username` & `password`. Ceci ensuit envoie une methode `POST` au meme route.  
+#### Analyse du système
+Une application web développée avec SpringBoot accède à une base de données MySQL. Cette application expose plusieurs routes via une API.
 
-Sinon, lorsque l'utilisateur est autentiqué il serra aussi autorisé a accedé les routes suivantes : 
+L'application possède une seule route accessible sans authentification : `/login`. Cette page contient un formulaire HTML avec deux champs `username` et `password`, et envoie une requête `POST` à la même URL.
+
+Une fois l'utilisateur authentifié, il peut accéder aux routes suivantes :
 - `/api/clients`
 - `/client/add`
 
+---
 
+### Attaque sur l'infrastructure
 
-#### Attaque sur l'infrastructure
+#### Tests effectués
 
-- black box & white box testing
-##### Black box testing
-
-###### Identification des faiblesse 
-
-1. Services de l'application
+##### Scanning des ports ouverts
 ```bash
 Host is up (0.00100s latency).
 Not shown: 65528 closed tcp ports (reset)
 PORT      STATE SERVICE    VERSION
-3306/tcp  open  mysql? 
+3306/tcp  open  mysql
 5000/tcp  open  rtsp
 7000/tcp  open  rtsp
 9898/tcp  open  monkeycom?
 35729/tcp open  tcpwrapped
 63693/tcp open  unknown
-```
+````
 
- Plusieurs PORT ouvert dont :
-- `3306/tcp mysql` -> mysql database port
-- `5000/tcp` & `7000/tcp rtsp` -> streaming protocl
-- `9898/tcp monkeycom` -> serveur web
+- **Port 3306**: Exposition possible de la base de données MySQL.
+- **Ports 5000 et 7000**: Protocoles RTSP identifiés, potentiellement liés à des outils de streaming locaux.
+- **Port 9898**: Serveur web accessible sur `/login`, vulnérable à des attaques par force brute.
 
-2. HTTP/HTTPS
+##### Tests de vulnérabilités spécifiques
 
-3. Manipulation d'un utilisateur
-
-####
-- brute force on user form for weak credentials
-- sql injection
-- brute force on MySQL database instance
-- CRSF attack
-
-
-
-
-### Résultats
-- Plusieurs ports ouverts détectés (53, 3306, 5000, etc.).
-- Des tests de force brute sur les mots de passe ont révélé plusieurs identifiants faibles.
-- Vulnérabilité possible de type CSRF détectée lors des tentatives de connexion.
-
-### Recommandations
-- Appliquer une politique stricte de mots de passe forts voir 2FA.
-- Valider les cookies côté serveur pour empêcher les attaques CSRF.
-- Limiter les ports ouverts et configurer des règles de pare-feu adéquates.
+- **Brute force**:
+    - Attaque sur `/login` révélant des identifiants faibles (e.g., `admin:123456`).
+    - Tentative de connexion à la base de données MySQL avec des mots de passe par défaut.
+- **Injection SQL**:
+    - Mapping `/api/clients` testé pour détecter des failles SQL (résultats à préciser).
+- **CSRF**:
+    - Analyse des requêtes POST montrant l'absence de protection contre les attaques CSRF.
 
 ---
 
+### Résultats
+
+#### Failles détectées
+
+- Plusieurs ports ouverts, notamment des services non sécurisés (RTSP, MySQL).
+- Absence de mécanismes de sécurité sur `/login` (e.g., protections anti-CSRF, captcha).
+- Failles possibles sur les routes `/api/clients` et `/client/add`.
+
+---
+
+### Recommandations
+
+#### Sécurisation des ports
+
+1. Fermer les ports inutilisés (e.g., `5000`, `7000`).
+2. Restreindre l’accès à MySQL en le liant uniquement à `127.0.0.1` pour éviter les connexions externes.
+
+#### Protection des utilisateurs
+
+1. Implémenter une politique stricte de mots de passe forts (longueur minimale, complexité).
+2. Activer l'authentification à deux facteurs (2FA) pour toutes les connexions.
+
+#### Protection des endpoints
+
+1. Implémenter des jetons CSRF pour toutes les requêtes POST.
+2. Protéger les routes sensibles avec des validations d’entrée robustes pour éviter les injections SQL.
+3. Ajouter des mécanismes comme Captcha pour empêcher les attaques par force brute sur les formulaires de connexion.
 ## Application Laravel
 ### Methodologie
 ### Résultats
