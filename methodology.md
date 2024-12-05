@@ -6,6 +6,7 @@ LastUpdated: 2024-12-04:0957
 ## Springboot
 #### scanning all ports & services
 
+
 ```bash
 Host is up (0.00100s latency).
 Not shown: 65528 closed tcp ports (reset)
@@ -146,4 +147,23 @@ msf6 auxiliary(scanner/http/dir_scanner) > run
 ```
 
 
+
+## hidora
+
+```bash
+Nmap scan report for node179686-env-1839015-etudiant-d02-01.sh1.hidora.com (45.86.36.79)
+Host is up (0.048s latency).
+Not shown: 62671 filtered tcp ports (no-response), 871 filtered tcp ports (host-prohibited), 1 filtered tcp ports (port-unreach)
+PORT      STATE  SERVICE        VERSION
+22/tcp    open   ssh            OpenSSH 8.0 (protocol 2.0)
+7070/tcp  closed realserver
+7077/tcp  closed unknown
+8041/tcp  closed enguity-xccetp
+8080/tcp  closed http-proxy
+8088/tcp  open   http           Jetty 6.1.26
+9070/tcp  open   http           Jetty 6.1.26
+9090/tcp  closed zeus-admin
+9091/tcp  closed xmltec-xmlmail
+16010/tcp closed unknown
+```
 
