@@ -1,6 +1,6 @@
 ---
 CreatedAt: 2024-12-05:1412
-LastUpdated: 2024-12-05:1419
+LastUpdated: 2024-12-05:1449
 ---
 # Rapport d'Analyse de Vulnérabilités et Recommandations
 
@@ -29,13 +29,63 @@ Ce document présente les résultats d'une analyse approfondie des vulnérabilit
 
 ## Application SpringBoot
 ### Methodologie
+
+#### Analyse du systeme
+Un application web de SpringBoot qui accede a un base de donnee MySQL. L'application web emploie aussi des routes d'un `API`. 
+
+L'application  possede 1 route lorsqu'un utilsateur n'est pas autentiqué, `/login`. Cette page contient un form html avec deux inputs `username` & `password`. Ceci ensuit envoie une methode `POST` au meme route.  
+
+Sinon, lorsque l'utilisateur est autentiqué il serra aussi autorisé a accedé les routes suivantes : 
+- `/api/clients`
+- `/client/add`
+
+
+
+#### Attaque sur l'infrastructure
+
+- black box & white box testing
+##### Black box testing
+
+###### Identification des faiblesse 
+
+1. Services de l'application
+```bash
+Host is up (0.00100s latency).
+Not shown: 65528 closed tcp ports (reset)
+PORT      STATE SERVICE    VERSION
+3306/tcp  open  mysql? 
+5000/tcp  open  rtsp
+7000/tcp  open  rtsp
+9898/tcp  open  monkeycom?
+35729/tcp open  tcpwrapped
+63693/tcp open  unknown
+```
+
+ Plusieurs PORT ouvert dont :
+- `3306/tcp mysql` -> mysql database port
+- `5000/tcp` & `7000/tcp rtsp` -> streaming protocl
+- `9898/tcp monkeycom` -> serveur web
+
+2. HTTP/HTTPS
+
+3. Manipulation d'un utilisateur
+
+####
+- brute force on user form for weak credentials
+- sql injection
+- brute force on MySQL database instance
+- CRSF attack
+
+
+
+
 ### Résultats
 - Plusieurs ports ouverts détectés (53, 3306, 5000, etc.).
 - Des tests de force brute sur les mots de passe ont révélé plusieurs identifiants faibles.
 - Vulnérabilité possible de type CSRF détectée lors des tentatives de connexion.
 
 ### Recommandations
-- Appliquer une politique stricte de mots de passe forts.
+- Appliquer une politique stricte de mots de passe forts voir 2FA.
 - Valider les cookies côté serveur pour empêcher les attaques CSRF.
 - Limiter les ports ouverts et configurer des règles de pare-feu adéquates.
 
