@@ -1,6 +1,6 @@
 ---
 CreatedAt: 2024-12-05:1412
-LastUpdated: 2024-12-05:1455
+LastUpdated: 2024-12-09:0945
 ---
 # Rapport d'Analyse de Vulnérabilités et Recommandations
 
@@ -65,10 +65,33 @@ PORT      STATE SERVICE    VERSION
 ##### Tests de vulnérabilités spécifiques
 
 - **Brute force**:
-    - Attaque sur `/login` révélant des identifiants faibles (e.g., `admin:123456`).
-    - Tentative de connexion à la base de données MySQL avec des mots de passe par défaut.
+    - Attaque sur `/login` révélant des identifiants faibles.
+    - Tentative de connexion à la base de données MySQL par Brute force et avec des mots de passe par défaut.
 - **Injection SQL**:
-    - Mapping `/api/clients` testé pour détecter des failles SQL (résultats à préciser).
+    - Mapping `/client/add` 
+```bash
+===============================================================
+Gobuster v3.6
+by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
+===============================================================
+[+] Url:                     http://192.168.64.1:9898/
+[+] Method:                  GET
+[+] Threads:                 10
+[+] Wordlist:                /home/kali/Downloads/api-endpoints.txt
+[+] Negative Status codes:   404
+[+] User Agent:              gobuster/3.6
+[+] Timeout:                 10s
+===============================================================
+Starting gobuster in directory enumeration mode
+===============================================================
+/api/clients          (Status: 200) [Size: 60332]
+Progress: 269 / 270 (99.63%)
+===============================================================
+Finished
+===============================================================
+
+```
+
 - **CSRF**:
     - Analyse des requêtes POST montrant l'absence de protection contre les attaques CSRF.
 
@@ -79,8 +102,8 @@ PORT      STATE SERVICE    VERSION
 #### Failles détectées
 
 - Plusieurs ports ouverts, notamment des services non sécurisés (RTSP, MySQL).
-- Absence de mécanismes de sécurité sur `/login` (e.g., protections anti-CSRF, captcha).
-- Failles possibles sur les routes `/api/clients` et `/client/add`.
+- Absence de mécanismes de sécurité sur `/login` (e.g., protections anti-CSRF, captcha, 2FA).
+
 
 ---
 
@@ -88,8 +111,7 @@ PORT      STATE SERVICE    VERSION
 
 #### Sécurisation des ports
 
-1. Fermer les ports inutilisés (e.g., `5000`, `7000`).
-2. Restreindre l’accès à MySQL en le liant uniquement à `127.0.0.1` pour éviter les connexions externes.
+2. Restreindre l’accès à MySQL en le liant uniquement à `127.0.0.1` pour éviter les connexions externes. 
 
 #### Protection des utilisateurs
 
@@ -100,7 +122,7 @@ PORT      STATE SERVICE    VERSION
 
 1. Implémenter des jetons CSRF pour toutes les requêtes POST.
 2. Protéger les routes sensibles avec des validations d’entrée robustes pour éviter les injections SQL.
-3. Ajouter des mécanismes comme Captcha pour empêcher les attaques par force brute sur les formulaires de connexion.
+3. Ajouter des mécanismes comme Captcha pour empêcher les attaques par force brute sur les formulaires de connexion. 
 ## Application Laravel
 ### Methodologie
 ### Résultats
